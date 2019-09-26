@@ -11,9 +11,7 @@ const initialState = {
   
   const reducer = (state = initialState, action) => {
     let newState = {};
-    console.log(action);
-    console.log("oldState is\n");
-    console.log(state);
+    
       switch (action.type) {
           case actionTypes.ADD_TODO:
               const newTodo = {
@@ -23,16 +21,14 @@ const initialState = {
                   done : false
               }
               newState = { ...state, todos: state.todos.concat(newTodo)};
-              console.log("newState is\n");
-              console.log(newState);
+          
               return newState;
           case actionTypes.DELETE_TODO:
               const deletedTodos = state.todos.filter((todo) => {
                 return todo.id !== action.targetID;
               });
               newState = { ...state, todos: deletedTodos };
-              console.log("newState is\n");
-              console.log(newState);
+            
               return newState;
           case actionTypes.TOGGLE_DONE:
               const modified = state.todos.map((todo) => {
@@ -43,9 +39,12 @@ const initialState = {
                 }
               });
               newState = { ...state, todos: modified };
-              console.log("newState is\n");
-              console.log(newState);
+            
               return newState;
+          case actionTypes.GET_TODO:
+            const target = { ...state.todos[action.targetID - 1] };
+            newState =  { ...state, selectedTodo: target };
+            return newState;
             default:
                 break;
       }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import Todo from '../../components/Todo/Todo';
-import TodoDetail from '../../components/TodoDetail/TodoDetail';
 import * as actionTypes from "../../store/actions/actionTypes";
 
 import { NavLink } from 'react-router-dom';
@@ -21,14 +20,10 @@ class TodoList extends Component {
   }
 
   clickTodoHandler = (td) => {
-    if (this.state.selectedTodo === td) {
-      this.setState({ ...this.state, selectedTodo: null });
-    } else {
-      this.setState({ ...this.state, selectedTodo: td });
-    }
-  }
+    this.props.history.push("/todos/" + td.id); }
 
   render() {
+    console.log(this.props);
     const todos = this.props.storedTodos.map(td => {
       return (
         <Todo
@@ -42,13 +37,7 @@ class TodoList extends Component {
       );
     });
 
-    let todo = null;
-    if (this.state.selectedTodo) {
-      todo = <TodoDetail
-        title={this.state.selectedTodo.title}
-        content={this.state.selectedTodo.content}
-      />
-    }
+
     return (
       <div className="TodoList">
         <div className='title'>
@@ -57,7 +46,6 @@ class TodoList extends Component {
         <div className='todos'>
           {todos}
         </div>
-        {todo}
         <NavLink to='/new-todo' exact>New Todo</NavLink>
       </div>
     )
