@@ -4,6 +4,7 @@ import Todo from '../../components/Todo/Todo';
 import TodoDetail from '../../components/TodoDetail/TodoDetail';
 
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './TodoList.css';
 
@@ -26,7 +27,7 @@ class TodoList extends Component {
   }
 
   render() {
-    const todos = this.state.todos.map(td => {
+    const todos = this.props.storedTodos.map(td => {
       return (
         <Todo
           key={td.id}
@@ -57,6 +58,12 @@ class TodoList extends Component {
       </div>
     )
   }
+}
+
+const mapStateToProps = state => {
+  return {
+    storedTodos: state.td.todos,
+  };
 }
 
 export default TodoList;
