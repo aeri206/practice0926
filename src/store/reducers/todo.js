@@ -10,6 +10,10 @@ const initialState = {
   };
   
   const reducer = (state = initialState, action) => {
+    let newState = {};
+    console.log(action);
+    console.log("oldState is\n");
+    console.log(state);
       switch (action.type) {
           case actionTypes.ADD_TODO:
               const newTodo = {
@@ -18,7 +22,30 @@ const initialState = {
                   content : action.content,
                   done : false
               }
-              return { ...state, todos: state.todos.concat(newTodo)};
+              newState = { ...state, todos: state.todos.concat(newTodo)};
+              console.log("newState is\n");
+              console.log(newState);
+              return newState;
+          case actionTypes.DELETE_TODO:
+              const deletedTodos = state.todos.filter((todo) => {
+                return todo.id !== action.targetID;
+              });
+              newState = { ...state, todos: deletedTodos };
+              console.log("newState is\n");
+              console.log(newState);
+              return newState;
+          case actionTypes.TOGGLE_DONE:
+              const modified = state.todos.map((todo) => {
+                if (todo.id === action.targetID) {
+                  return { ...todo, done: !todo.done };
+                } else {
+                  return { ...todo };
+                }
+              });
+              newState = { ...state, todos: modified };
+              console.log("newState is\n");
+              console.log(newState);
+              return newState;
             default:
                 break;
       }

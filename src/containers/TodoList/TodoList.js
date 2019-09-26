@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 import Todo from '../../components/Todo/Todo';
 import TodoDetail from '../../components/TodoDetail/TodoDetail';
+import * as actionTypes from "../../store/actions/actionTypes";
 
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import './TodoList.css';
 
@@ -33,7 +35,9 @@ class TodoList extends Component {
           key={td.id}
           title={td.title}
           done={td.done}
-          clicked={() => this.clickTodoHandler(td)}
+          clickDetail={() => this.clickTodoHandler(td)}
+          clickDone={() => this.props.onToggleTodo(td.id)}
+          clickDelete={() => this.props.onDeleteTodo(td.id)}
         />
       );
     });
@@ -65,5 +69,13 @@ const mapStateToProps = state => {
     storedTodos: state.td.todos,
   };
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    onToggleTodo: (id) =>
+      dispatch({ type: actionTypes.TOGGLE_DONE, targetID: id }),
+    onDeleteTodo: (id) =>
+      dispatch({ type: actionTypes.DELETE_TODO, targetID: id }),
+  }
+}
 
-export default TodoList;
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TodoList));
